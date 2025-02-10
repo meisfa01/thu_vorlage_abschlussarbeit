@@ -1,0 +1,63 @@
+\documentclass[12pt, A4paper]{scrreport}
+
+\input{framework/preamble.tex}
+
+% Persönliche Einstellungen
+\newcommand{\getAuthor}{Max Mustermann}												% Autor		
+\newcommand{\getTitle}{Titel der Bachelorarbeit}										% Titel der Bachelorarbeit
+\newcommand{\getFaculty}{Fakultät T}														   % Fakultät
+\newcommand{\getLocation}{Ulm}														  		    % Ort
+\newcommand{\getStudyCourse}{Mechatronik}											 % Studiengang
+\newcommand{\getDegree}{Bachelor of Engineering (B.Eng.)}					 % Abschlussart
+\newcommand{\getKolloqDate}{\textcolor{red}{tbd}}									 % Tag des Kolloquiums
+\newcommand{\getFirstEval}{Prof. Dr.-Ing. \textcolor{red}{tbd}}					 % 1. Gutachter
+\newcommand{\getSecEval}{Prof. Dr.-Ing. \textcolor{red}{tbd}}					 % 2. Gutachter
+\newcommand{\getYears}{\textcolor{red}{tbd}}						  					  % Zeitdauer des Sperrvermerks
+
+\begin{document}
+	
+	%----Titelseite----
+	\include{framework/titelseite}
+	
+    %----Römische Nummerierung----
+	\pagenumbering{Roman}
+	\newcounter{savepage}
+	
+	\include{framework/sperrvermerk}
+	\include{framework/eigenständigkeit}
+	\include{framework/zusammenfassung}
+	
+	\tableofcontents
+	\listoftodos
+	
+	\include{framework/abkuerzungsverzeichnis}
+	\include{framework/notation}
+	
+	
+	%----Arabische Nummerierung----
+	\cleardoublepage
+	\setcounter{savepage}{\arabic{page}}
+	\pagenumbering{arabic}
+	\onehalfspacing
+	
+	\include{content/1_einleitung}
+	\include{content/2_grundlagen}
+	% Hier weiteren content einfügen
+	
+
+	%----Römische Nummerierung----
+	\cleardoublepage
+	\pagenumbering{Roman}
+	\setcounter{page}{\thesavepage}
+	
+	\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+	\printbibliography
+	\addcontentsline{toc}{chapter}{\listfigurename}
+	\listoffigures
+
+	\chapter*{Anhang}
+	\addcontentsline{toc}{chapter}{Anhang}
+	
+	
+	
+\end{document}

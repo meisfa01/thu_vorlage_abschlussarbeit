@@ -1,0 +1,20 @@
+\thispagestyle{plain}
+\onehalfspacing
+\section*{Zusammenfassung}
+\addcontentsline{toc}{chapter}{Zusammenfassung}
+Zukünftig sollen die Bewegungsabläufe von Portalwaschanlagen durch zusätzliche Messeinrichtungen im Voraus optimal geplant werden. Aus diesen Daten wird zur Laufzeit der schnellstmögliche Bewegungsablauf der Achsen berechnet, der durch Beschleunigung, Geschwindigkeit und Position beschrieben wird.\\
+Im Rahmen dieser Arbeit wird eine Regelung für die Antriebsstränge einer Portalwaschanlage entworfen, die diese Größen als Führungsgrößen verwenden soll. Ziel der Regelung ist die bestmögliche Umsetzung der Vorgaben durch den im Antriebsstrang eingebauten Motor, wobei als Messgröße nur die aktuelle Position zur Verfügung steht.
+Schwierigkeiten bei der Regelungssynthese sind die auftretenden Totzeiten bei der Signalübertragung sowie das Getriebespiel im Antriebsstrang.
+Die Pfad- und Trajektorienplanung wird exemplarisch für eine vordefinierte Kontur durchgeführt, um das Regelungskonzept zu testen.\\
+Die Simulationen haben gezeigt, dass grundsätzlich ein Kaskadenregler mit Smith-Prädiktor und eine Zustandsregelung mit Beobachter für dieses Projekt geeignet sind. Das erstgenannte Regelungskonzept zeigt jedoch deutliche Schwingungen im Beschleunigungsverlauf, wodurch die Achse nach der Bewegung weiterhin um die Zielposition oszilliert. Diese Eigenschaft ist beim Zustandsregler weniger ausgeprägt. Außerdem bietet der Beobachter zusätzliche Einstellparameter, weshalb dieses Konzept vorzuziehen ist.
+
+
+\section*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+In the future, the motion sequences of portal washing systems will be optimally planned in advance using additional measuring devices. This data is used to calculate the fastest possible motion sequence of the axes at runtime, which is described by acceleration, velocity, and position.\\
+As part of this work, a control system for the drive trains of a gantry car wash is designed that uses these variables as reference variables. The goal of the control system is the best possible implementation of the specifications by the motor installed in the drive train, where only the current position is available as a measured variable.
+Difficulties in control synthesis are the dead times that occur during signal transmission and the gear backlash in the drive train.
+To test the control concept, the path and trajectory planning is performed for a predefined contour.\\
+The simulations have shown that a cascade controller with smith predictor and a state controller with observer are basically suitable for this project. However, the first control concept shows significant oscillations in the acceleration curve, i.e. the axis continues to oscillate around the target position after the movement. This characteristic is less pronounced with the state controller. The observer also offers additional setting parameters, which is why this concept is preferable.
+
+\singlespacing

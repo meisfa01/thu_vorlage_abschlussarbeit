@@ -1,0 +1,55 @@
+
+\begin{titlepage}
+	\thispagestyle{empty}
+	\makeatletter %Zur Verwendung von @author, @title
+	
+	{\centering
+	\includegraphics*[height=0.15\textwidth]{thu_logo}\hspace{4cm}
+	\includegraphics*[height=0.15\textwidth]{christ_logo}
+	\\\vspace{3cm}
+	Technische Hochschule Ulm\\
+	Fakultät T\\
+	Studiengang Mechatronik
+	\\\vspace{1.5cm}
+	$\underline{\hspace{10cm}}$
+	\\\vspace{1.5cm}
+	Abschlussarbeit zur Erlangung des akademischen Grades
+	\\\vspace{3mm}
+	{\bfseries{\large Bachelor of Engineering (B.Eng.)}}
+	\\\vspace{10mm}
+	über das Thema
+	\\\vspace{10mm}
+	\begin{spacing}{2}
+			{\bfseries{\Large \@title}}
+	\end{spacing}
+	\vspace{10em}
+	vorgelegt von\\
+	\@author
+	\vfill
+	%(Matrikelnummer 3139844)
+	\vfill
+
+	{\begin{center}
+			Ulm, \today
+	\end{center}
+	}
+}
+\newpage
+\thispagestyle{empty}
+~ %hartes Leerzeichen
+\vfill
+
+\begingroup
+\renewcommand{\arraystretch}{1.5} % Default value: 1
+\begin{tabular}{ l l }
+1. Gutachter: & Prof. Dr.-Ing. Heiko Peuscher\\
+2. Gutachter: & Prof. Dr.-Ing. Marcel Mayer\\
+[2cm]
+Tag des Kolloquiums: & 12.02.2025\\
+Zum Druck genehmigt: & Ulm, \today\\
+\end{tabular}
+\endgroup
+
+
+
+\end{titlepage}

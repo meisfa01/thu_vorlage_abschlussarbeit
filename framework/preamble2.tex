@@ -1,0 +1,441 @@
+
+% ##################################################
+% Seitenlayout
+% ##################################################
+\usepackage[automark,headsepline]{scrlayer-scrpage}
+
+
+\pagestyle{scrheadings}
+\raggedbottom
+
+\newcommand{\publish}{}			%auskommentiern für großen Seitenrand
+\ifdefined\publish
+\usepackage[bindingoffset=0mm,
+left=20mm,
+right=20mm,
+bottom=10mm,
+top=5mm,
+footskip=15mm,
+headheight=15mm,
+includehead, includefoot
+] {geometry} 
+\else
+\usepackage[bindingoffset=0mm,
+left=5mm,
+right=9cm,
+bottom=5mm,
+top=5mm,
+paperwidth=27cm,
+paperheight=25cm,
+marginparwidth=8cm,
+twoside=false,
+% ncludehead, includefoot
+] {geometry} 
+\fi
+
+% ##################################################
+% Sprache
+% ##################################################
+%\usepackage[utf8]{inputenc}  % Eingabe von Umlauten ermÃ¶glichen
+%\usepackage[latin1]{inputenc}  % Eingabe von Umlauten ermÃ¶glichen
+\usepackage[T1]{fontenc}                     
+\usepackage{textcomp}
+\usepackage[ngerman]{babel} % Sprachpaket
+\usepackage[babel,german=quotes]{csquotes}
+%\addto\extrasenglish{\languageshorthands{ngerman}}          
+%\usepackage{hyphenat}                   
+\selectlanguage{ngerman}
+
+
+% ##################################################
+% Bibliografie
+% ##################################################
+\immediate\write18{if exist copyBib.bat start /B copyBib.bat}
+\usepackage[sorting=nty,
+%                                       firstinits=true,
+giveninits=true,
+style=numeric,
+backend=bibtex,                           % bibtex8 biber,
+isbn=false,
+doi=false,
+sortcites=true,
+maxnames=4]{biblatex}
+%\addbibresource{C:/Dokumente/Fachliteratur/Bibliothek}
+\addbibresource{../../../Fachliteratur/Bibliothek}								%eigene Ressource angeben
+
+\newcommand{\MiniBibliography}{\vspace{1em}%
+	{\renewcommand{\baselinestretch}{1.25}%
+		\let\emph\relax \DeclareTextFontCommand{\emph}{\normalfont}         % emph -> normal
+		\renewcommand{\chapter}[2]{\subsection*{##2}}%
+		\printbibliography}}
+
+
+
+% ##################################################
+% PGF Plots
+% ##################################################
+\usepackage{pgfplots}
+\usepackage{circuitikz}[=v1.2.7] %[siunitx]
+\pgfplotsset{compat=1.7}
+%\pgfplotsset{compat=1.15}
+%\pgfplotsset{compat=1.5}
+\usepgfplotslibrary{patchplots}
+\usepgfplotslibrary{fillbetween}
+\usepackage{pgfplotstable}
+\pgfmathsetmacro{\PI}{3.141592654}
+
+\usepackage{tikz}
+\usepackage{mathtools}
+\usetikzlibrary{arrows}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}        % verkÃ¼rzte Angabe of
+\usetikzlibrary{fit}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{circuits.logic.IEC}
+\usetikzlibrary{circuits.plc.ladder} %
+%\usetikzlibrary{calligraphy}
+% Alle Tikz-Grafiken einzeln als pdf und svg ablegen
+\ifdefined\externalizeTikz
+\usetikzlibrary{external}
+%\immediate\write18{if not exist Abb md Abb}
+\tikzset{external/system call={
+		%                                       echo \texsource %&& %
+		pdflatex \tikzexternalcheckshellescape --extra-mem-bot=1000000 --extra-mem-top=100000 -halt-on-error -interaction=batchmode -jobname "\image" "\texsource" %
+		%pdftops -eps "\image".pdf  &&
+		&& inkscape "\image".pdf --export-type="pdf,svg,emf"
+		%--export-background=#ffffff --export-background-opacity=1
+		%%                                    && convert \image.pdf \image.png
+		%           %                         &&        pdf2png "\image" %
+		%%                                    && cd Abb
+		%%                                    && del "\image".dpth % Abb/"\image".log Abb/"\image".md5 Abb/"\image".*xml %
+	}  %
+} %
+\tikzexternalize[prefix=Abb/, shell escape=-enable-write18] %
+\fi
+
+\def\blockwidth{1.6}
+\tikzset{
+	Block/.style args={#1}{%
+		rectangle, draw, inner sep=0mm, fit={(0,0) (\blockwidth,1)},
+		append after command={\pgfextra{\let\mainnode=\tikzlastnode %
+				\node[anchor=center, inner sep=0] at (\mainnode.center) {{#1}};%
+			}
+		}
+	},
+	PGlied/.style args={#1}{%
+		rectangle, draw, inner sep=0mm, fit={(0,0) (\blockwidth,1)},
+		append after command={\pgfextra{\let\mainnode=\tikzlastnode %
+				\node[above=0.25em,anchor=base west, inner sep=0] at (\mainnode.north west) {{#1}};%
+				\begin{scope}[xscale=\blockwidth,shift={($(\mainnode.south west)$)}]
+					\draw[very thick] (0,0.8) -- (1,0.8); %
+				\end{scope} %
+			}
+		}
+	},
+	IGlied/.style args={#1}{%
+		rectangle, draw, inner sep=0mm, fit={(0,0) (\blockwidth,1)}, %
+		append after command={\pgfextra{\let\mainnode=\tikzlastnode %
+				\node[above=0.25em,anchor=base west, inner sep=0] at (\mainnode.north west) {{#1}};%
+				\begin{scope}[xscale=\blockwidth,shift={($(\mainnode.south west)$)}]
+					\draw[very thick] (0.01,0.01) -- (0.99,0.99); %
+				\end{scope} %
+			}
+		}
+	},
+	DGlied/.style args={#1}{%
+		rectangle, draw, inner sep=0mm, fit={(0,0) (\blockwidth,1)}, %
+		append after command={\pgfextra{\let\mainnode=\tikzlastnode %
+				\node[above=0.25em,anchor=base west, inner sep=0] at (\mainnode.north west) {{#1}};%
+				\begin{scope}[xscale=\blockwidth,shift={($(\mainnode.south west)$)}]
+					\draw[very thick] (0,0.1) -- (0.1,0.1) -- (0.1,1) -- (0.1,0.1) -- (1,0.1); %
+				\end{scope} %
+			}
+		}
+	},
+	PT1/.style args={#1#2}{%
+		rectangle, draw, inner sep=0mm, fit={(0,0) (\blockwidth,1)}, %
+		append after command={\pgfextra{\let\mainnode=\tikzlastnode %
+				\node[above=0.25em,anchor=base west, inner sep=0] at (\mainnode.north west) {{#1}};%
+				\node[above=0.25em,anchor=base east, inner sep=0] at (\mainnode.north east) {{#2}};%
+				\begin{scope}[xscale=\blockwidth,shift={($(\mainnode.south west)$)}]
+					\draw[very thick] (0.01,0) .. controls (0.2,1) and (0.4,0.95) .. (1,0.95); %
+				\end{scope} %
+			}
+		}
+	},
+	PT2/.style args={#1#2}{%
+		rectangle, draw, inner sep=0mm, fit={(0,0) (\blockwidth,1)}, %
+		append after command={\pgfextra{\let\mainnode=\tikzlastnode %
+				\node[above=0.25em,anchor=base west, inner sep=0] at (\mainnode.north west) {{#1}};%
+				\node[above=0.25em,anchor=base east, inner sep=0] at (\mainnode.north east) {{#2}};%
+				\begin{scope}[xscale=\blockwidth,shift={($(\mainnode.south west)$)}]
+					\draw[very thick] (0.01,0)              .. controls (0.1,0.8)         and (0.25,1)       .. (0.35,0.8)
+					.. controls (0.45,0.65)    and (0.55,0.75)         .. (0.6,0.8)
+					.. controls (0.7,0.87)      and (0.75,0.82)         .. (0.8,0.8)
+					.. controls (0.85,0.78)    and (0.9,0.78)           .. (1,0.8) ;
+					-- (1, 0.8); %
+				\end{scope} %
+			}
+		}
+	},
+	Totzeit/.style args={#1}{%
+		rectangle, draw, inner sep=0mm, fit={(0,0) (\blockwidth,1)}, %
+		append after command={\pgfextra{\let\mainnode=\tikzlastnode %
+				\node[above=0.25em,anchor=base west, inner sep=0] at (\mainnode.north west) {{#1}};%
+				%                                                     \draw[xscale=\blockwidth,very thick, inner sep=0]  (0,0.01) -- (0.2,0.01) -- (0.2,0.8) -- (1,0.8);
+				\begin{scope}[xscale=\blockwidth,shift={($(\mainnode.south west)$)}]
+					\draw[very thick] (0,0.01) -- (0.2,0.01) -- (0.2,0.8) -- (1,0.8);
+				\end{scope} %
+			}
+		}
+	},
+	Kennlinie/.style args={#1}{%
+		rectangle, draw, inner sep=0mm, fit={(0,0) (\blockwidth,1)},
+		append after command={\pgfextra{\let\mainnode=\tikzlastnode %
+				%                                                     \draw (0.05,0.05) rectangle (\blockwidth-0.05,0.95);
+				\node[anchor=center, inner sep=0] at (\mainnode.center) {{#1}};%
+				\begin{scope}[shift={($(\mainnode.south west)$)}]
+					\draw (0.05,0.05) rectangle (\blockwidth-0.05,0.95);
+				\end{scope} %  
+			}
+		}
+	},
+	Saturation/.style args={#1}{%
+		rectangle, draw, inner sep=0mm, fit={(0,0) (\blockwidth,1)},
+		append after command={\pgfextra{\let\mainnode=\tikzlastnode %
+				%                                                     \draw[xscale=\blockwidth, thin] (0.2,0.5) -- (0.8,0.5);
+				%                                                     \draw[xscale=\blockwidth, thin] (0.5,0.1) -- (0.5,0.9);
+				%                                                     \draw[xscale=\blockwidth, very thick] (0.2,0.2) -- (0.35,0.2) -- (0.65,0.8) -- (0.8,0.8);
+				\begin{scope}[xscale=\blockwidth,shift={($(\mainnode.south west)$)}]
+					\draw[very thick] (0.2,0.2) -- (0.35,0.2) -- (0.65,0.8) -- (0.8,0.8);
+					\draw[thin]  (0.2,0.5) -- (0.8,0.5) (0.5,0.1) -- (0.5,0.9);
+				\end{scope} %
+			}
+		}
+	},
+	ReLU/.style args={#1}{%
+		rectangle, draw, inner sep=0mm, fit={(0,0) (\blockwidth,1)},
+		append after command={\pgfextra{\let\mainnode=\tikzlastnode %
+				\begin{scope}[xscale=\blockwidth,shift={($(\mainnode.south west)$)}]
+					\draw[very thick] (0.2,0.3) -- (0.5,0.3) -- (0.8,0.8);
+					\draw[thin]  (0.2,0.3) -- (0.8,0.3) (0.5,0.1) -- (0.5,0.9);
+				\end{scope} %
+			}
+		}
+	},
+	DeadZone/.style args={#1}{%
+		rectangle, draw, inner sep=0mm, fit={(0,0) (\blockwidth,1)},
+		append after command={\pgfextra{\let\mainnode=\tikzlastnode %
+				\begin{scope}[xscale=\blockwidth,shift={($(\mainnode.south west)$)}]
+					\draw[very thick] (0.2,0.15) -- (0.4,0.5) -- (0.6,0.5) -- (0.8,0.85);
+					\draw[thin]  (0.2,0.5) -- (0.8,0.5) (0.5,0.1) -- (0.5,0.9);
+				\end{scope} %
+			}
+		}
+	},
+	Hysterese/.style args={#1}{%
+		rectangle, draw, inner sep=0mm, fit={(0,0) (\blockwidth,1)},
+		append after command={\pgfextra{\let\mainnode=\tikzlastnode %
+				\begin{scope}[xscale=\blockwidth,shift={($(\mainnode.south west)$)}]
+					\draw[thin]  (0.2,0.5) -- (0.8,0.5) (0.5,0.1) -- (0.5,0.9);
+					\draw[-<, very thick] (0.1,0.15)  .. controls (0.3,0.15)  .. (0.4,0.5) -- (0.45,0.7);
+					\draw[very thick] (0.4,0.5) .. controls (0.5, 0.85) .. (0.9,0.85);
+					\draw[very thick] (0.1,0.15)  .. controls (0.5,0.15) .. (0.6,0.5);
+					\draw[>-,very thick] (0.55,0.3) -- (0.6,0.5) .. controls (0.7, 0.85) .. (0.9,0.85);
+				\end{scope} %
+			}
+		}
+	},
+	RateLimiter/.style args={#1}{%
+		rectangle, draw, inner sep=0mm, fit={(0,0) (\blockwidth,1)},
+		append after command={\pgfextra{\let\mainnode=\tikzlastnode %
+				\begin{scope}[xscale=\blockwidth,shift={($(\mainnode.south west)$)}]
+					\draw[thin]  (0.2,0.5) -- (0.8,0.5) (0.5,0.1) -- (0.5,0.9);
+					\draw[very thin]  (0.25,0.15) -- (0.75,0.85);
+					\draw[very thick] (0.27,0.35) arc (-60:-35:0.75 and 0.6) -- (0.73,0.82);
+					\draw[thin] (0.27,0.35) arc (-60:-2:0.75 and 0.6);
+				\end{scope} %                               }
+		}
+	}
+}
+}
+
+\tikzstyle{prod} = [draw, circle, minimum size=7mm, %label={[anchor=center]$\times$},
+append after command={\pgfextra{\let\mainnode=\tikzlastnode %
+	\node[anchor=center, inner sep=0] at (\mainnode.center) {\large $\times$};%
+}
+}]
+
+
+
+\tikzstyle{sum} = [draw, circle, inner sep=2mm]
+\tikzstyle{box} = [draw, rectangle, inner sep=2mm]
+\tikzstyle{junction} = [circle, fill, inner sep=0.5mm]
+
+%\def\subnode#1#2{\tikz[remember picture,baseline=(#1.base),inner sep=0pt,outer sep=0pt,minimum width=0pt]\node(#1){#2};}
+
+\pgfplotscreateplotcyclelist{THUcolors}{
+%blue!31!green,every mark/.append style={fill=blue!10!black},mark=+
+{THUBlue},
+{THUGreen},
+{THUDarkBlue},
+}
+
+
+\pgfplotsset{
+every axis/.append style={
+	cycle list name=THUcolors,
+},
+AmplGang/.style={
+	xmode=log,
+	enlarge x limits=0,
+	grid=both,
+	y filter/.code={\pgfmathparse{20*log10(\pgfmathresult)}},           %dB Skala
+	ytick distance=20,
+	scale only axis,
+	no markers,
+	xlabel={$\omega$},
+	ylabel={$|G(j\omega)|$\ in dB}, ylabel near ticks, y label style={at={(rel axis cs:0,1)},rotate=-90,anchor=south east,inner sep=1mm},
+	every axis plot/.append style={line width=2pt},
+	width=6cm, height=3cm
+},
+AmplGang/.belongs to family=/pgfplots/scale,
+PhasenGang/.style={
+	xmode=log,
+	enlarge x limits=0,
+	grid=both,
+	ytick distance=45,
+	scale only axis,
+	no markers,
+	xlabel={$\omega$},
+	ylabel={$\angle G(j\omega)$\ in\ $^\circ$}, ylabel near ticks, y label style={at={(rel axis cs:0,1)},rotate=-90,anchor=south east,inner sep=1mm},
+	every axis plot/.append style={line width=2pt},
+	%                         cycle list name=THUcolors,
+	width=6cm, height=3cm
+},
+PhasenGang/.belongs to family=/pgfplots/scale,
+Ortskurve/.style={
+	%                         enlarge x limits=1,
+	grid=none,
+	%                         no markers,
+	%                         ymajorticks=false, xmajorticks=false,
+	scale only axis,
+	scale mode=scale uniformly,
+	xlabel={Re},
+	ylabel={Im},
+	axis lines=middle,
+	every axis plot/.append style={line width=2pt},
+	before end axis/.code={
+		\addplot [domain=-180:180, samples=100, color=black, thin] ({cos(x)},{sin(x)});
+	},
+	height=7cm,
+},
+OrtskurveOhneKreis/.style={
+	grid=none,
+	scale only axis,
+	scale mode=scale uniformly,
+	xlabel={Re},
+	ylabel={Im},
+	axis lines=middle,
+	every axis plot/.append style={line width=2pt},
+	height=7cm,
+},
+SignalKont/.style={
+	%                         enlarge x limits=1,
+	grid=both,
+	no markers,
+	%                         ymajorticks=false, xmajorticks=false,
+	scale only axis,
+	extra x tick style={grid=none},
+	xlabel={$t$}, x label style={at={(axis cs:1,0)},anchor=north},
+	ylabel near ticks, y label style={at={(axis cs:0,1)},rotate=-90,anchor=south east},
+	axis lines=middle,
+	every axis plot/.append style={line width=2pt},
+	cycle list name=THUcolors,
+},
+}
+
+\usetikzlibrary{patterns,decorations.pathmorphing,decorations.markings}
+
+\tikzstyle{spring}=[thick,decorate,decoration={zigzag,pre length=0.4cm,post length=0.4cm,segment length=5}]
+\tikzstyle{damper}=[thick,decoration={markings, 
+mark connection node=dmp,
+mark=at position 0.5 with
+{
+	\node (dmp) [thick,inner sep=0pt,transform shape,rotate=-90,minimum width=15pt,minimum height=3pt,draw=none] {};
+	\draw [thick] ($(dmp.north east)+(2pt,0)$) -- (dmp.south east) -- (dmp.south west) -- ($(dmp.north west)+(2pt,0)$);
+	\draw [thick] ($(dmp.north)+(0,-5pt)$) -- ($(dmp.north)+(0,5pt)$);
+}
+}, decorate]
+\tikzstyle{ground}=[fill,pattern=north east lines, pattern color=black,draw=none]
+
+
+
+%\tikzset{>={Latex[width=1.7mm,length=2.5mm]}}
+\tikzset{>={Latex[width=2mm,length=3mm]}}
+
+
+
+% ##################################################
+% Packages
+% ##################################################
+%\usepackage[draft]{graphicx} % Paket zum Einbinden von Graphiken und Bildern, mÃ¶glich [dvips]
+\usepackage[\ifdefined\draft draft=true\fi]{grffile}         % vgl. https://tex.stackexchange.com/questions/110513/unknown-graphics-extension-1-png\\
+\graphicspath{{./pictures/}}        %default path for pictures
+%\usepackage{svg}
+%\usepackage{pdfpages} % Einbinden von externen pdf-Dateien
+
+
+
+\usepackage[shortlabels]{enumitem}
+\setlist{nosep} % or \setlist{noitemsep} to leave space around whole list
+
+% Mathe
+\usepackage{amsmath}                             % Paket für Mathematische Formeln ([fleqn] bereits als doc option)
+\usepackage{nicefrac}                               % Schöne Brüche
+\usepackage{xfrac}                                    % Diagonale Brüche \sfrac
+
+% Symbole
+\usepackage{amssymb}                            % Paket für Mathematische Symbole
+\usepackage{stmaryrd}                             % Blitz-Symbol \lightning
+\usepackage{trfsigns}                               % Laplace-Symbol
+\usepackage{mathcomp}                          % Paket mit Gradzeichen
+\usepackage[official]{eurosym} 				 % Euro-Symbol
+
+%\usepackage{units}                                 % Paket für units-Darstellung im Text
+%\usepackage[exponent-product={\cdot},retain-explicit-plus]{siunitx}
+
+% Formatierung
+\interfootnotelinepenalty=10000           % Umbrüche von Fußnoten verbieten
+\usepackage{longtable}
+\usepackage{tabularray}
+\usepackage{tabularx}
+
+% Zeitplanung
+\usepackage{pgfgantt}
+\usepackage{datetime}
+\renewcommand{\dateseparator}{.} % Datumsformat anpassen
+
+\newcounter{myweek}
+\setcounter{myweek}{40} % Startwoche (Kalenderwoche 40 für 1. Oktober 2024)
+
+\newcommand{\ganttweektitle}{%
+	\gantttitle{KW \themyweek}{7}%
+	\stepcounter{myweek}%
+}
+
+% Layout
+\usepackage{tocbasic}
+\renewcommand{\baselinestretch}{1.5} % 1,5-facher Zeilenabstand
+
+% Links
+\usepackage{xcolor}             % for colored text
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{1,1,1}
+\definecolor{peuscherblau}{rgb}{0,0.33,0.63}
+\usepackage[colorlinks=true]{hyperref}
+\hypersetup{
+	linkcolor=peuscherblau,
+	urlcolor=peuscherblau}

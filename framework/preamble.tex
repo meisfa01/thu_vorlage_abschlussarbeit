@@ -1,0 +1,205 @@
+
+% ##################################################
+% Sprache
+% ##################################################
+\usepackage[T1]{fontenc}                     
+\usepackage{textcomp}
+\usepackage[ngerman]{babel}
+\usepackage[babel,german=quotes]{csquotes}                   
+\selectlanguage{ngerman}
+
+
+% ##################################################
+% Dokumentvariablen
+% 
+% Hier funktionieren keine Umlaute:  {\"u} = ü
+% ##################################################
+\author{Max Mustermann} 																				
+\title{Titel der Bachelorarbeit}
+
+\newcommand{\publish}{}			%auskommentiern für großen Seitenrand mit Kommentaren
+
+
+% ##################################################
+% Seitenlayout
+% ##################################################
+\usepackage[automark,headsepline]{scrlayer-scrpage}
+\ihead{}
+\chead{}
+\ohead{\headmark}
+\pagestyle{scrheadings}
+\addtokomafont{captionlabel}{\bfseries}
+\raggedbottom
+
+%new pagestyle with logo top right
+\newpairofpagestyles[scrheadings]{sperrvermerk}{
+	\KOMAoptions{headsepline=false}
+	\setlength{\headheight}{80pt} 
+	\setlength{\headsep}{0pt}    % Increase separation between header and text
+	\ohead*{\includegraphics*[height=75pt]{thu_logo}}
+}
+
+\ifdefined\publish
+\usepackage[bindingoffset=0mm,
+left=20mm,
+right=20mm,
+bottom=10mm,
+top=5mm,
+footskip=15mm,
+headheight=15mm,
+includehead, includefoot
+] {geometry} 
+\usepackage[disable]{todonotes}
+\else
+\usepackage[bindingoffset=0mm,
+left=5mm,
+right=9cm,
+bottom=5mm,
+top=5mm,
+paperwidth=27cm,
+paperheight=25cm,
+marginparwidth=8cm,
+twoside=false,
+% ncludehead, includefoot
+] {geometry} 
+\usepackage{todonotes}
+\fi
+
+
+% ##################################################
+% Bibliografie
+% ##################################################
+\immediate\write18{if exist copyBib.bat start /B copyBib.bat}
+\usepackage[sorting=none
+giveninits=true,
+style=numeric,
+backend=bibtex,                       
+isbn=false,
+doi=false,
+sortcites=true,
+maxnames=4]{biblatex}
+\addbibresource{citavi_export.bib}
+
+\newcommand{\MiniBibliography}{\vspace{1em}%
+	{\renewcommand{\baselinestretch}{1.25}%
+		\let\emph\relax \DeclareTextFontCommand{\emph}{\normalfont}  
+		\renewcommand{\chapter}[2]{\subsection*{##2}}
+		\printbibliography}}
+
+
+
+% ##################################################
+% PGF Plots
+% ##################################################
+\usepackage{tikz-3dplot}
+\usepackage{pgfplots}
+\usepackage{circuitikz}[=v1.2.7] %[siunitx]
+\pgfplotsset{compat=1.7}
+%\pgfplotsset{compat=1.15}
+%\pgfplotsset{compat=1.5}
+\usepgfplotslibrary{patchplots}
+\usepgfplotslibrary{fillbetween}
+\usepgfplotslibrary{groupplots}
+\usepackage{pgfplotstable}
+\pgfmathsetmacro{\PI}{3.141592654}
+
+\usepackage{tikz}
+\usepackage{mathtools}
+\usetikzlibrary{arrows}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}        % verkÃ¼rzte Angabe of
+\usetikzlibrary{fit}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{circuits.logic.IEC}
+\usetikzlibrary{circuits.plc.ladder} %
+\usetikzlibrary{spy, backgrounds}
+
+
+\pgfplotscreateplotcyclelist{THUcolors}{
+{Blue},
+{Green},
+{Orange},
+}
+
+\pgfplotsset{
+	every axis/.append style={
+	cycle list name=THUcolors,
+	y tick label style={/pgf/number format/.cd,
+		scaled y ticks = false,
+		set thousands separator={},
+		set decimal separator={,},
+		fixed},
+	x tick label style={/pgf/number format/.cd,
+		scaled x ticks = false,
+		set thousands separator={},
+		set decimal separator={,},
+		fixed}
+},
+}
+
+% ##################################################
+% Packages
+% ##################################################
+%\usepackage[draft]{graphicx} % Paket zum Einbinden von Graphiken und Bildern, mÃ¶glich [dvips]
+\usepackage[\ifdefined\draft draft=true\fi]{grffile}         % vgl. https://tex.stackexchange.com/questions/110513/unknown-graphics-extension-1-png\\
+\graphicspath{{./pictures/}}        %default path for pictures
+%\usepackage{svg}
+%\usepackage{pdfpages} % Einbinden von externen pdf-Dateien
+\usepackage{wrapfig}
+
+
+\usepackage[shortlabels]{enumitem}
+\setlist{nosep} % or \setlist{noitemsep} to leave space around whole list
+
+% Mathe
+\usepackage{amsmath}                             % Paket für Mathematische Formeln ([fleqn] bereits als doc option)
+\usepackage{nicefrac}                               % Schöne Brüche
+\usepackage{xfrac}                                    % Diagonale Brüche \sfrac
+
+% Symbole
+\usepackage{amssymb}                            % Paket für Mathematische Symbole
+\usepackage{stmaryrd}                             % Blitz-Symbol \lightning
+\usepackage{trfsigns}                               % Laplace-Symbol
+\usepackage{mathcomp}                          % Paket mit Gradzeichen
+\usepackage[official]{eurosym} 				 % Euro-Symbol
+
+% Formatierung
+\interfootnotelinepenalty=10000           % Umbrüche von Fußnoten verbieten
+\usepackage{longtable}
+\usepackage{tabularray}
+\usepackage{tabularx}
+
+% Zeitplanung
+\usepackage{datetime}
+
+% Layout
+\usepackage{tocbasic}
+\renewcommand{\baselinestretch}{1} % 1,5-facher Zeilenabstand
+
+% Links
+\usepackage[table]{xcolor}             % for colored text
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{1,1,1}
+\definecolor{linkcolour}{rgb}{0,0.33,0.63}
+\definecolor{Blue}{rgb}{0,0.33,0.63}
+\definecolor{Green}{rgb}{0,11.63,0.11}
+\definecolor{DarkBlue}{rgb}{0,0.23,0.93}
+\definecolor{Orange}{rgb}{0.9,0.4,0}
+
+
+\usepackage[colorlinks=true, hyperfootnotes=false]{hyperref}
+\hypersetup{
+	linkcolor=linkcolour,
+	urlcolor=linkcolour,
+	citecolor=black}
+\usepackage{setspace}
+\usepackage{booktabs}
+%\usepackage{cleveref}
+
+% Abkürzungen
+\usepackage[printonlyused]{acronym}
+
+% Schriftart
+\usepackage{lmodern}
